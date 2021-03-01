@@ -11,6 +11,9 @@ class BodyPosition(
         def get_dist_to_sagittal(data):
             sdf_type = 'sagittal'
             model = get_model(sdf_type)
+            predictions = model.predict(data)
+            predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
+            return predictions
         
         def get_dist_to_coronal(data):
             sdf_type = 'coronal'
@@ -29,3 +32,6 @@ class BodyPosition(
             from bodyposition import seg
             ss, data3d, voxelsize = seg.read_scan(dataset, scannum)
             return data3d
+        
+if __name__ == "__main__":
+    pass
