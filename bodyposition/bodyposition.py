@@ -8,14 +8,17 @@ class BodyPosition(
         self, imshape, head_first=True
         ):
         
-        def get_dist_to_sagittal():
+        def get_dist_to_sagittal(data):
             sdf_type = 'sagittal'
+            model = get_model(sdf_type)
         
-        def get_dist_to_coronal():
+        def get_dist_to_coronal(data):
             sdf_type = 'coronal'
+            model = get_model(sdf_type)
         
-        def get_dist_to_surface():
+        def get_dist_to_surface(data):
             sdf_type = 'surface'
+            model = get_model(sdf_type)
         
         def get_model(sdf_type):
             from tensorflow.keras.models import load_model
