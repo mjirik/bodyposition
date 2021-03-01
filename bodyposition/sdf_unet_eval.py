@@ -12,9 +12,9 @@ from tensorflow.keras import backend as K
 
 def test(
     imshape=256,
-    sdf_type='diaphragm_axial',
+    # sdf_type='diaphragm_axial',
     # sdf_type='coronal',
-    # sdf_type='sagittal',
+    sdf_type='sagittal',
     # sdf_type='surface',
     filename_prefix='',
     test_ids = [20, 40],
@@ -53,8 +53,8 @@ def test(
         predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], 256, 256)
         Y_test = np.asarray(Y_test).reshape(np.asarray(Y_test).shape[0], 256, 256)
         
-        sed3.show_slices(np.asarray(X_test[0:-1]), np.asarray(Y_test[0:-1]), slice_step=10, axis=1)
-        sed3.show_slices(np.asarray(X_test[0:-1]), np.asarray(predictions[0:-1]), slice_step=10, axis=1)
+        sed3.show_slices(np.asarray(X_test[0:-1]), np.asarray(Y_test[0:-1]), slice_step=10, axis=0)
+        sed3.show_slices(np.asarray(X_test[0:-1]), np.asarray(predictions[0:-1]), slice_step=10, axis=0)
 
 if __name__ == "__main__":
     # this will be skipped if file is imported but it will work if file is called from commandline
