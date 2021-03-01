@@ -42,6 +42,7 @@ def read_scan(dataset, scannum):
     Returns:
         ss: bodynavigation data
         data3d_orig: orig data
+        voxelsize
     """
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum)
     ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
