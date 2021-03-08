@@ -16,11 +16,12 @@ class BodyPosition:
         self.orig_shape = data3d.shape
 
     def get_dist_to_sagittal(self):
-        data = self.data3d
+        data = self.data3dr
         sdf_type = 'sagittal'
-        if self.model == None:
+        if sdf_type not in models:
             model = self._get_model(sdf_type)
             self.model = model
+        data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape)
         predictions = model.predict(data)
         predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
         self.predictions = predictions
