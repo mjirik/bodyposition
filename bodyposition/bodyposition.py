@@ -12,7 +12,7 @@ class BodyPosition:
         self.sdf_type = ''
         self.models = models
         self.working_vs = np.asarray([1.] * 3)
-        self.data3dr = imma.image.resize_to_mm(data3d, voxelsize_mm, self.working_vs)
+        self.data3dr = imma.image.resize_to_shape(data3d, [int(data3d.shape[0] * voxelsize_mm[0] / self.working_vs[0]), imshape, imshape])
         self.orig_shape = data3d.shape
 
     def get_dist_to_sagittal(self):
@@ -22,7 +22,7 @@ class BodyPosition:
             model = self._get_model(sdf_type)
             self.model = model
         data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape)
-        predictions = model.predict(data)
+        predictions = self.model.predict(data)
         predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
         self.predictions = predictions
         return self._resize_to_orig_shape(predictions)
