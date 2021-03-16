@@ -292,13 +292,25 @@ def normalize(img):
 
 def normalizescan(scan):
     '''
-    Use the fcn.normalize function on all slices of a scan.
+    Use the normalize function on all slices of a scan.
     Returns the whole scan back.
     '''
     normalized = np.empty((len(scan),), dtype=object)
     normalized[:] = [[] * len(normalized)]
     for i in range(len(scan)):
         normalized[i] = np.asarray([normalize(scan[i][0]), scan[i][1]])
+    return normalized
+
+def normalizescan2(scan):
+    '''
+    This is without labels in the scan array.
+    Use the normalize function on all slices of a scan.
+    Returns the whole scan back.
+    '''
+    normalized = np.empty((len(scan),), dtype=object)
+    normalized[:] = [[] * len(normalized)]
+    for i in range(len(scan)):
+        normalized[i] = np.asarray(normalize(scan[i]))
     return normalized
 
 def augmentscan(scan):

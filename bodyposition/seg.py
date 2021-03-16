@@ -8,7 +8,7 @@ import numpy as np
 
 import csv
 import os
-from . import lines
+# from . import lines
 import copy
 import glob
 import io3d
