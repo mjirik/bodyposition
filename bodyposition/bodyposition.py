@@ -1,7 +1,8 @@
 from loguru import logger
 import numpy as np
 import imma.image
-import CT_regression_tools
+# import bodyposition.CT_regression_tools
+from . import CT_regression_tools
 
 models = {}
 
