@@ -7,7 +7,7 @@
 # qsub metaSDF_sagittal.sh
 
 # nastaveni domovskeho adresare, v promenne $LOGNAME je ulozeno vase prihlasovaci jmeno
-DATADIR="/storage/plzen1/home/$LOGNAME/bodynavigation/bodynavigation/advanced_segmentation"
+DATADIR="/storage/plzen1/home/$LOGNAME/bodyposition/bodyposition/"
 # nebo snad "/storage/plzen4-ntis/home/$LOGNAME/"  ?
 
 # nacteni aplikacniho modulu, ktery zpristupni aplikaci Gaussian verze 3
@@ -28,17 +28,17 @@ cd $SCRATCHDIR || exit 1
 # cp $DATADIR/gaussian_test.com $SCRATCHDIR
 
 # spusteni aplikace - samotny vypocet
-export PATH=/storage/plzen1/home/$LOGNAME/miniconda/bin:$PATH
+export PATH=/storage/plzen1/home/$LOGNAME/miniconda3/bin:$PATH
 #echo /storage/plzen1/home/$LOGNAME/projects/scaffan/experiments/metacentrum/SA_experiments.xlsx
 # this is because of python click
 #export LC_ALL=C.UTF-8
 #export LANG=C.UTF-8
 
-module add cuda
-activate tf_gpu
+conda activate tf_gpu
+cd /storage/plzen1/home/javorek/bodyposition/
 
 # python -m scaffan set --common-spreadsheet-file /storage/plzen1/home/$LOGNAME/projects/scaffan/experiments/metacentrum/SA_experiments.xlsx
-python /storage/plzen1/home/javorek/bodynavigation/bodynavigation/advanced_segmentation/metacoronal.py > /storage/plzen1/home/javorek/meta_sdf_output_coronal.txt
+python /storage/plzen1/home/javorek/bodyposition/devel/metacentrum/metacoronal.py > /storage/plzen1/home/javorek/meta_sdf_output_coronal.txt
 
 # kopirovani vystupnich dat z vypocetnicho uzlu do domovskeho adresare,
 # pokud by pri kopirovani doslo k chybe, nebude adresar SCRATCH vymazan pro moznost rucniho vyzvednuti dat
