@@ -3,7 +3,7 @@ import numpy as np
 import imma.image
 # import bodyposition.CT_regression_tools
 from . import CT_regression_tools
-
+# import CT_regression_tools
 models = {}
 
 class BodyPosition:
@@ -14,9 +14,9 @@ class BodyPosition:
         self.sdf_type = ''
         self.models = models
         self.working_vs = np.asarray([1.] * 3)
-        # self.data3dr = imma.image.resize_to_shape(data3d, [int(data3d.shape[0] * voxelsize_mm[0] / self.working_vs[0]), imshape, imshape])
-        self.data3dr = data3d
-        self.orig_shape = [data3d.shape[0], self.imshape, self.imshape]
+        zsize = int(data3d.shape[0] * voxelsize_mm[0] / self.working_vs[0])
+        self.data3dr = imma.image.resize_to_shape(data3d, [zsize, imshape, imshape])
+        self.orig_shape = data3d.shape
 
     def get_dist_to_sagittal(self):
         sdf_type = 'sagittal'
@@ -24,13 +24,7 @@ class BodyPosition:
             model = self._get_model(sdf_type)
             self.model = model
         
-        data = self._resize()
-        data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape, 1)
-        
-        predictions = self.model.predict(data)
-        
-        predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
-        self.predictions = predictions
+        predictions = self._predict()
         
         return self._resize_to_orig_shape(predictions)
 
@@ -40,13 +34,7 @@ class BodyPosition:
             model = self._get_model(sdf_type)
             self.model = model
         
-        data = self._resize()
-        data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape, 1)
-        
-        predictions = self.model.predict(data)
-        
-        predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
-        self.predictions = predictions
+        predictions = self._predict()
         
         return self._resize_to_orig_shape(predictions)
     
@@ -56,13 +44,7 @@ class BodyPosition:
             model = self._get_model(sdf_type)
             self.model = model
         
-        data = self._resize()
-        data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape, 1)
-        
-        predictions = self.model.predict(data)
-        
-        predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
-        self.predictions = predictions
+        predictions = self._predict()
         
         return self._resize_to_orig_shape(predictions)
     
@@ -78,10 +60,21 @@ class BodyPosition:
             models[sdf_type] = model
         return model
     
-    def _resize(self):
+    def _predict(self):
+        data = CT_regression_tools.normalize(self.data3dr)
+        data = self._resize(data)
+        data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape, 1)
+        
+        predictions = self.model.predict(data)
+        
+        predictions = np.asarray(predictions).reshape(np.asarray(predictions).shape[0], self.imshape, self.imshape)
+        self.predictions = predictions
+        return predictions
+    
+    def _resize(self, data):
         data2 = []
-        for i in range(len(self.data3dr)):
-            data2.append(CT_regression_tools.resize(self.data3dr[i], self.imshape))
+        for i in range(len(data)):
+            data2.append(CT_regression_tools.resize(data[i], self.imshape))
         return data2
     
     def get_data(self, dataset, scannum):

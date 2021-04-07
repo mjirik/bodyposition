@@ -281,13 +281,8 @@ def normalize(img):
     img += 1000
     img = np.array(img)
     img = img * (1/2000)
-    
-    for row in img:
-        for i in range(len(row)):
-            if row[i] > 1:
-                row[i] = 1
-            elif row[i] < 0:
-                row[i] = 0
+    img[img>1]=1
+    img[img<0]=0
     return img
 
 def normalizescan(scan):
@@ -301,17 +296,6 @@ def normalizescan(scan):
         normalized[i] = np.asarray([normalize(scan[i][0]), scan[i][1]])
     return normalized
 
-def normalizescan2(scan):
-    '''
-    This is without labels in the scan array.
-    Use the normalize function on all slices of a scan.
-    Returns the whole scan back.
-    '''
-    normalized = np.empty((len(scan),), dtype=object)
-    normalized[:] = [[] * len(normalized)]
-    for i in range(len(scan)):
-        normalized[i] = np.asarray(normalize(scan[i]))
-    return normalized
 
 def augmentscan(scan):
     '''

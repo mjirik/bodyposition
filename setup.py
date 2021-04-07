@@ -11,14 +11,14 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 setup(
     name="bodyposition",
-    description="3D viewer and editor of color seeds",
+    description="Segmentation of signed distance fields in anatomy using neural networks.",
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.0.0',
-    url="https://github.com/mjirik/py3DSeedEditor",
-    author="Miroslav Jirik",
-    author_email="miroslav.jirik@gmail.com",
+    version='0.0.1',
+    url="https://github.com/mjirik/bodyposition",
+    author=["Vaclav Javorek", "Miroslav Jirik"],
+    author_email=["javorek@students.zcu.cz", "miroslav.jirik@gmail.com"],
     license="MIT",
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -36,14 +36,14 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         # 'Programming Language :: Python :: 2',
         # 'Programming Language :: Python :: 2.6',
-        "Programming Language :: Python :: 2.7",
+        # "Programming Language :: Python :: 2.7",
         # 'Programming Language :: Python :: 3',
         # 'Programming Language :: Python :: 3.2',
         # 'Programming Language :: Python :: 3.3',
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.7",
     ],
     # What does your project relate to?
-    keywords="viewer 3D editor",
+    keywords="medicine segmentation computervision convolutional neural networks u-net",
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=find_packages(),  # exclude=['contrib', 'docs', 'tests*']),
