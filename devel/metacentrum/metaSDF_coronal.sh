@@ -34,11 +34,13 @@ export PATH=/storage/plzen1/home/$LOGNAME/miniconda3/bin:$PATH
 #export LC_ALL=C.UTF-8
 #export LANG=C.UTF-8
 
-conda activate tf_gpu
+#conda activate tf_gpu
+source activate keras-gpu
 cd /storage/plzen1/home/javorek/bodyposition/
 
 # python -m scaffan set --common-spreadsheet-file /storage/plzen1/home/$LOGNAME/projects/scaffan/experiments/metacentrum/SA_experiments.xlsx
-python /storage/plzen1/home/javorek/bodyposition/devel/metacentrum/metacoronal.py > /storage/plzen1/home/javorek/meta_sdf_output_coronal.txt
+#python /storage/plzen1/home/javorek/bodyposition/devel/metacentrum/metasagittal.py > /storage/plzen1/home/javorek/meta_sdf_output_sagittal.txt
+python3.9 -m devel/metacentrum/metacoronal > /storage/plzen1/home/javorek/meta_sdf_output_coronal.txt
 
 # kopirovani vystupnich dat z vypocetnicho uzlu do domovskeho adresare,
 # pokud by pri kopirovani doslo k chybe, nebude adresar SCRATCH vymazan pro moznost rucniho vyzvednuti dat
