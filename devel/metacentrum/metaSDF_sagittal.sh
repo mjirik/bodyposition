@@ -35,7 +35,7 @@ export PATH=/storage/plzen1/home/$LOGNAME/miniconda3/bin:$PATH
 #export LANG=C.UTF-8
 
 #conda activate tf_gpu
-source activate tf_gpu
+source activate keras-gpu
 cd /storage/plzen1/home/javorek/bodyposition/
 
 # python -m scaffan set --common-spreadsheet-file /storage/plzen1/home/$LOGNAME/projects/scaffan/experiments/metacentrum/SA_experiments.xlsx
