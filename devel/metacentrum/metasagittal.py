@@ -1,3 +1,6 @@
+import sys
+print(sys.path)
+
 from bodyposition import sdf_unet256
 import time
 
