@@ -1,5 +1,10 @@
+import sys
+print(sys.path)
+
 from bodyposition import sdf_unet256
 import time
+
+sdf_type='surface'
 
 start_time = time.time()
 
@@ -8,7 +13,7 @@ sdf_unet256.train(
     # sdf_type='diaphragm_axial',
     # sdf_type='coronal',
     # sdf_type='sagittal',
-    sdf_type='surface',
+    sdf_type=sdf_type,
     skip_h5=False,
     batch_size=16,
     epochs=100,

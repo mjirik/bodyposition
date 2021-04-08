@@ -1,12 +1,17 @@
+import sys
+print(sys.path)
+
 from bodyposition import sdf_unet256
 import time
+
+sdf_type='coronal'
 
 start_time = time.time()
 
 sdf_unet256.train(
     imshape=256,
     # sdf_type='diaphragm_axial',
-    sdf_type='coronal',
+    sdf_type=sdf_type,
     # sdf_type='sagittal',
     # sdf_type='surface',
     skip_h5=False,
