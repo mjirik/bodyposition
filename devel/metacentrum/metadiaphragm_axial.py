@@ -11,9 +11,6 @@ start_time = time.time()
 sdf_unet256_tensorboard.train(
     imshape=256,
     sdf_type=sdf_type,
-    # sdf_type='coronal',
-    # sdf_type='sagittal',
-    # sdf_type='surface',
     skip_h5=False,
     batch_size=16,
     epochs=200,

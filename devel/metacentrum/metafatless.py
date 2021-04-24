@@ -4,16 +4,13 @@ print(sys.path)
 from bodyposition import sdf_unet256, sdf_unet256_tensorboard
 import time
 
-sdf_type='bones'
+sdf_type='fatless'
 
 start_time = time.time()
 
 sdf_unet256_tensorboard.train(
     imshape=256,
-    # sdf_type='diaphragm_axial',
-    # sdf_type='coronal',
     sdf_type=sdf_type,
-    # sdf_type='surface',
     skip_h5=False,
     batch_size=16,
     epochs=200,
