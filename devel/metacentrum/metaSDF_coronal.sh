@@ -40,7 +40,7 @@ cd /storage/plzen1/home/javorek/bodyposition/
 
 # python -m scaffan set --common-spreadsheet-file /storage/plzen1/home/$LOGNAME/projects/scaffan/experiments/metacentrum/SA_experiments.xlsx
 #python /storage/plzen1/home/javorek/bodyposition/devel/metacentrum/metasagittal.py > /storage/plzen1/home/javorek/meta_sdf_output_sagittal.txt
-python -m devel.metacentrum.metabones > /storage/plzen1/home/javorek/meta_sdf_output_bones.txt
+python -m devel.metacentrum.metacoronal > /storage/plzen1/home/javorek/meta_sdf_output_coronal.txt
 
 # kopirovani vystupnich dat z vypocetnicho uzlu do domovskeho adresare,
 # pokud by pri kopirovani doslo k chybe, nebude adresar SCRATCH vymazan pro moznost rucniho vyzvednuti dat
