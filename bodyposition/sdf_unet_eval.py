@@ -14,9 +14,9 @@ def test(
     imshape=256,
     # sdf_type='diaphragm_axial',
     # sdf_type='coronal',
-    sdf_type='sagittal',
-    # sdf_type='surface',
-    filename_prefix='',
+    # sdf_type='sagittal',
+    sdf_type='surface',
+    filename_prefix='meta3_',
     test_ids = [20, 40],
 ):
     """Evaluates a U-net NN with test data loaded from a .h5 file.
@@ -35,7 +35,7 @@ def test(
         Y_test = []
         
         #Loading test data
-        with h5py.File(f'{filename_prefix}sdf_{sdf_type}{imshape}.h5', 'r') as h5f:
+        with h5py.File(f'sdf_{sdf_type}{imshape}.h5', 'r') as h5f:
             logger.info('Loading...')
             X_test.extend(np.asarray(h5f[f'scan_{i}']))
             Y_test.extend(np.asarray(h5f[f'label_{i}']))

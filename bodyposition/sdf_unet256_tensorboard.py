@@ -76,9 +76,11 @@ def get_unet(weights=None):
 def train(
     imshape=256,
     # sdf_type='diaphragm_axial',
-    sdf_type='coronal',
+    # sdf_type='coronal',
     # sdf_type='sagittal',
     # sdf_type='surface',
+    sdf_type='bones',
+    sdf_type='fatless',
     skip_h5=False,
     batch_size=8,
     epochs=50,

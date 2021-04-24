@@ -62,3 +62,9 @@ def visualize(seg, data3d_orig):
     seg, slice_step=10, axis=0
     )
     plt.show()
+    
+if __name__ == "__main__":
+    ss, data3d, voxelsize = read_scan("3Dircadb1",13)
+    plt.imshow(data3d[50], cmap='gray')
+    plt.contour(ss.dist_to_surface()[50]>0)
+    plt.show()
