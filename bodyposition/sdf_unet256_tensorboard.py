@@ -79,7 +79,7 @@ def train(
     # sdf_type='coronal',
     # sdf_type='sagittal',
     # sdf_type='surface',
-    sdf_type='bones',
+    # sdf_type='bones',
     sdf_type='fatless',
     skip_h5=False,
     batch_size=8,
