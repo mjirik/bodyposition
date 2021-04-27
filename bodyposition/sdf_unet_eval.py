@@ -15,9 +15,11 @@ def test(
     # sdf_type='diaphragm_axial',
     # sdf_type='coronal',
     # sdf_type='sagittal',
-    sdf_type='surface',
-    filename_prefix='meta3_',
-    test_ids = [20, 40],
+    # sdf_type='surface',
+    sdf_type='bones',
+    # sdf_type='fatless',
+    filename_prefix='meta_',
+    test_ids = [19, 20],
 ):
     """Evaluates a U-net NN with test data loaded from a .h5 file.
 
@@ -29,6 +31,8 @@ def test(
     """
     
     model = load_model(f"{filename_prefix}sdf_unet_{sdf_type}.h5")
+    import visualkeras
+    visualkeras.graph_view(model, to_file='output.png')
     
     for i in range(len(test_ids)):
         X_test = []

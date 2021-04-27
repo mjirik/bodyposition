@@ -48,6 +48,26 @@ class BodyPosition:
         
         return self._resize_to_orig_shape(predictions)
     
+    def get_dist_to_bones(self):
+        sdf_type = 'bones'
+        if sdf_type not in models:
+            model = self._get_model(sdf_type)
+            self.model = model
+        
+        predictions = self._predict()
+        
+        return self._resize_to_orig_shape(predictions)
+    
+    def get_dist_to_fatless(self):
+        sdf_type = 'fatless'
+        if sdf_type not in models:
+            model = self._get_model(sdf_type)
+            self.model = model
+        
+        predictions = self._predict()
+        
+        return self._resize_to_orig_shape(predictions)
+    
     def _resize_to_orig_shape(self, data):
         return imma.image.resize_to_shape(data, self.orig_shape)
     
