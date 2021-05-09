@@ -68,6 +68,36 @@ class BodyPosition:
         
         return self._resize_to_orig_shape(predictions)
     
+    def get_dist_to_liver(self):
+        sdf_type = 'liver'
+        if sdf_type not in models:
+            model = self._get_model(sdf_type)
+            self.model = model
+        
+        predictions = self._predict()
+        
+        return self._resize_to_orig_shape(predictions)
+    
+    def get_dist_to_spleen(self):
+        sdf_type = 'spleen'
+        if sdf_type not in models:
+            model = self._get_model(sdf_type)
+            self.model = model
+        
+        predictions = self._predict()
+        
+        return self._resize_to_orig_shape(predictions)
+    
+    def get_dist_to_lungs(self):
+        sdf_type = 'lungs'
+        if sdf_type not in models:
+            model = self._get_model(sdf_type)
+            self.model = model
+        
+        predictions = self._predict()
+        
+        return self._resize_to_orig_shape(predictions)
+    
     def _resize_to_orig_shape(self, data):
         return imma.image.resize_to_shape(data, self.orig_shape)
     
