@@ -42,12 +42,22 @@ def compare(
     if sdf_type == "liver" or sdf_type == "spleen" or sdf_type == "lungs" or sdf_type == "fatless" or sdf_type == "bones":
         organ_detection_on = True
     
+    # BODYNAVIGATION
+    
     start_time = time.time()
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
-    ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
-    sdf1 = eval(f"ss.dist_to_{sdf_type}()")
+    if not organ_detection_on:
+        ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
+        sdf1 = eval(f"ss.dist_to_{sdf_type}()")
+    else:
+        from bodynavigation.organ_detection import OrganDetection
+        od = OrganDetection(data, voxelsize)
+        sdf1 = eval(f"od.get{sdf_type}()")
     time1 = time.time() - start_time
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf1[0:-1]), axis=0)
+    
+    
+    # BODYPOSITION
     
     start_time = time.time()
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
