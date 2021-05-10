@@ -22,7 +22,7 @@ def test(
     # sdf_type='spleen',
     # sdf_type='lungs',
     filename_prefix='',
-    test_ids = [19, 20],
+    test_ids = [20, 40],
 ):
     """Evaluates a U-net NN with test data loaded from a .h5 file.
 
