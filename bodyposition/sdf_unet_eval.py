@@ -16,23 +16,26 @@ def test(
     # sdf_type='coronal',
     # sdf_type='sagittal',
     # sdf_type='surface',
-    sdf_type='bones',
+    # sdf_type='bones',
     # sdf_type='fatless',
-    filename_prefix='meta_',
+    sdf_type='liver',
+    # sdf_type='spleen',
+    # sdf_type='lungs',
+    filename_prefix='',
     test_ids = [19, 20],
 ):
     """Evaluates a U-net NN with test data loaded from a .h5 file.
 
     Args:
         imshape (int, optional): Shape of dataset's images. Defaults to 256.
-        sdf_type (str, optional): Type of sdf method we train. Can be: sagittal, coronal, surface or diaphragm_axial.
+        sdf_type (str, optional): Type of sdf method we train. Can be: sagittal, coronal, surface, liver, spleen, lungs, bones, fatless or diaphragm_axial.
         filename_prefix (str, optional): Option to add a prefix to create new files when testing. Defaults to ''.
         test_ids (list, optional): Test data scans' indexes in the dataset. Defaults to [20, 40].
     """
     
     model = load_model(f"{filename_prefix}sdf_unet_{sdf_type}.h5")
-    import visualkeras
-    visualkeras.graph_view(model, to_file='output.png')
+    # import visualkeras
+    # visualkeras.graph_view(model, to_file='output.png')
     
     for i in range(len(test_ids)):
         X_test = []

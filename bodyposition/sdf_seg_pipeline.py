@@ -16,9 +16,9 @@ def prepare_data(
     # sdf_type='sagittal',
     # sdf_type='surface',
     skip_h5=False,
-    n_data=20,
+    n_data=40,
     filename_prefix='',
-    organ_detection_on=True,
+    organ_detection_on=False,
 ):
     """
 
@@ -50,13 +50,13 @@ def prepare_data(
         if organ_detection_on:
             from bodynavigation.organ_detection import OrganDetection
             obj = OrganDetection(data, voxelsize)
-            # Y_train1 = obj.getBones()
-            # Y_train2 = obj.getFatlessBody()
+            Y_train1 = obj.getBones()
+            Y_train2 = obj.getFatlessBody()
             Y_train3 = obj.getLiver()
             Y_train4 = obj.getSpleen()
             Y_train5 = obj.getLungs()
-            # Y_train1 = skimage.transform.resize(np.asarray(Y_train1), [Y_train1.shape[0], imshape, imshape], preserve_range = True)
-            # Y_train2 = skimage.transform.resize(np.asarray(Y_train2), [Y_train2.shape[0], imshape, imshape], preserve_range = True)
+            Y_train1 = skimage.transform.resize(np.asarray(Y_train1), [Y_train1.shape[0], imshape, imshape], preserve_range = True)
+            Y_train2 = skimage.transform.resize(np.asarray(Y_train2), [Y_train2.shape[0], imshape, imshape], preserve_range = True)
             Y_train3 = skimage.transform.resize(np.asarray(Y_train3), [Y_train3.shape[0], imshape, imshape], preserve_range = True)
             Y_train4 = skimage.transform.resize(np.asarray(Y_train4), [Y_train4.shape[0], imshape, imshape], preserve_range = True)
             Y_train5 = skimage.transform.resize(np.asarray(Y_train5), [Y_train5.shape[0], imshape, imshape], preserve_range = True)
@@ -69,14 +69,14 @@ def prepare_data(
 
         if not skip_h5:
             if organ_detection_on:
-                # with h5py.File(f'{filename_prefix}sdf_bones{imshape}.h5', 'a') as h5f:
-                #     logger.debug(f"X_train={X_train.dtype}")
-                #     h5f.create_dataset(f'scan_{i}', data=X_train)
-                #     h5f.create_dataset(f'label_{i}', data=Y_train1)
-                # with h5py.File(f'{filename_prefix}sdf_fatless{imshape}.h5', 'a') as h5f:
-                #     logger.debug(f"X_train={X_train.dtype}")
-                #     h5f.create_dataset(f'scan_{i}', data=X_train)
-                #     h5f.create_dataset(f'label_{i}', data=Y_train2)
+                with h5py.File(f'{filename_prefix}sdf_bones{imshape}.h5', 'a') as h5f:
+                    logger.debug(f"X_train={X_train.dtype}")
+                    h5f.create_dataset(f'scan_{i}', data=X_train)
+                    h5f.create_dataset(f'label_{i}', data=Y_train1)
+                with h5py.File(f'{filename_prefix}sdf_fatless{imshape}.h5', 'a') as h5f:
+                    logger.debug(f"X_train={X_train.dtype}")
+                    h5f.create_dataset(f'scan_{i}', data=X_train)
+                    h5f.create_dataset(f'label_{i}', data=Y_train2)
                 with h5py.File(f'{filename_prefix}sdf_liver{imshape}.h5', 'a') as h5f:
                     logger.debug(f"X_train={X_train.dtype}")
                     h5f.create_dataset(f'scan_{i}', data=X_train)

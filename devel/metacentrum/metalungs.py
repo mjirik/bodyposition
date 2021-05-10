@@ -15,9 +15,9 @@ sdf_unet256_tensorboard.train(
     batch_size=16,
     epochs=200,
     filename_prefix='',
-    validation_ids = [19],
-    test_ids = [20],
-    n_data = 20,
+    validation_ids = [19, 39],
+    test_ids = [20, 40],
+    n_data = 40,
 )
 
 print(f"{sdf_type}: Training time: {time.time() - start_time} seconds")

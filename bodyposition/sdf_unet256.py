@@ -75,9 +75,10 @@ def get_unet(weights=None):
 def train(
     imshape=256,
     # sdf_type='diaphragm_axial',
-    sdf_type='coronal',
+    # sdf_type='coronal',
     # sdf_type='sagittal',
     # sdf_type='surface',
+    sdf_type='spleen',
     skip_h5=False,
     batch_size=8,
     epochs=50,
@@ -90,7 +91,7 @@ def train(
 
     Args:
         imshape (int, optional): Shape of dataset's images. Defaults to 256.
-        sdf_type (str, optional): Type of sdf method we train. Can be: sagittal, coronal, surface or diaphragm_axial.
+        sdf_type (str, optional): Type of sdf method we train. Can be: sagittal, coronal, surface, liver, spleen, lungs, bones, fatless or diaphragm_axial.
         skip_h5 (bool, optional): Specify True if you want to skip saving the model. Defaults to False.
         batch_size (int, optional): Fitting batch size. Defaults to 16.
         epochs (int, optional): Number of epochs for fitting. Defaults to 50.
