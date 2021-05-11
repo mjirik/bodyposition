@@ -5,6 +5,7 @@ import sed3
 import time
 import seg
 import io3d
+import imma
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
@@ -46,6 +47,7 @@ def compare(
     
     start_time = time.time()
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
+    voxelsize = data3d_orig["voxelsize_mm"]
     if not organ_detection_on:
         ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
         sdf1 = eval(f"ss.dist_to_{sdf_type}()")
@@ -65,6 +67,9 @@ def compare(
     sdf2 = eval(f"bpo.get_dist_to_{sdf_type}()")
     time2 = time.time() - start_time
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf2[0:-1]), axis=0)
+    
+    evaluation = imma.volumetry_evaluation.compare_volumes(sdf1, sdf2, voxelsize_mm=voxelsize)
+    
     
 if __name__ == "__main__":
     # this will be skipped if file is imported but it will work if file is called from commandline
