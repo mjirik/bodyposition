@@ -8,6 +8,7 @@ import seg
 import io3d
 import imma
 import exsu
+import bodyposition.CT_regression_tools
 from pathlib import Path
 
 from tensorflow.keras.models import Sequential
@@ -40,53 +41,55 @@ def compare(
         scannum (int): Number of the scan this loads
     """
     
-    import bodynavigation as bn
-    import bodyposition as bp
+    import bodynavigation
+    import bodyposition.bodyposition as bp
 
-    outputdir = Path("./test_report/")
+    outputdir = Path("./experiments/")
     commonsheet = Path("./experiments.xlsx")
     report = exsu.report.Report(outputdir=outputdir, additional_spreadsheet_fn=commonsheet, check_version_of=["numpy", "scipy"])
 
-    # plt.figure()
-    # plt.imshow(lfalsj)
-    # plt.savefig("soubor.pdf")
-    # plt.show()
-
-    
     if sdf_type == "liver" or sdf_type == "spleen" or sdf_type == "lungs" or sdf_type == "fatless" or sdf_type == "bones":
         organ_detection_on = True
+    
+    data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
+    voxelsize = data3d_orig["voxelsize_mm"]
     
     # BODYNAVIGATION
     
     start_time = time.time()
-    data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
-    voxelsize = data3d_orig["voxelsize_mm"]
+    
     if not organ_detection_on:
         ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
-        sdf1 = eval(f"ss.dist_to_{sdf_type}()")
+        sdf_bodynavigation = eval(f"ss.dist_to_{sdf_type}()")
     else:
         from bodynavigation.organ_detection import OrganDetection
-        od = OrganDetection(data, voxelsize)
-        sdf1 = eval(f"od.get{sdf_type}()")
-    time1 = time.time() - start_time
+        od = OrganDetection(data3d_orig["data3d"], voxelsize)
+        sdf_bodynavigation = eval(f"od.get{sdf_type}()")
+    time_bodynavigation = time.time() - start_time
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf1[0:-1]), axis=0)
 
     
     # BODYPOSITION
-    # report.imsave("obrazek", np.random.random([20,30]), level=60)
     
     start_time = time.time()
-    data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
-    bpo = bp.Bodyposition(data3d_orig["data3d"])
-    sdf2 = eval(f"bpo.get_dist_to_{sdf_type}()")
-    time2 = time.time() - start_time
+    
+    bpo = bp.BodyPosition(data3d_orig["data3d"], data3d_orig['voxelsize_mm'])
+    sdf_bodyposition = eval(f"bpo.dist_to_{sdf_type}()")
+    time_bodyposition = time.time() - start_time
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf2[0:-1]), axis=0)
     
-    evaluation = imma.volumetry_evaluation.compare_volumes(sdf1, sdf2, voxelsize_mm=voxelsize)
+    # EVALUATION AND REPORT SAVING
+    
+    evaluation = imma.volumetry_evaluation.compare_volumes(sdf_bodynavigation, sdf_bodyposition, voxelsize_mm=voxelsize)
+    # logger.info(evaluation)
+    
     report.add_cols_to_actual_row({
+        "sdf type": sdf_type,
+        "dataset": dataset,
+        "scannum": scannum,
         "datetime": time.time(),
-        "time1": time1,
-        "time2": time2,
+        "time_bodynavigation": time_bodynavigation,
+        "time_bodyposition": time_bodyposition,
     })
     report.add_cols_to_actual_row(evaluation)
     report.finish_actual_row()

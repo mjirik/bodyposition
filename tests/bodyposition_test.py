@@ -12,7 +12,7 @@ def test_import():
 
     data3d_orig = io3d.read_dataset("3Dircadb1", "data3d", 1)
     bp = bpo.BodyPosition(data3d_orig['data3d'], data3d_orig['voxelsize_mm'])
-    sdf_sagittal = bp.get_dist_to_sagittal()
+    sdf_sagittal = bp.dist_to_sagittal()
 
     assert np.max(sdf_sagittal) > 0
     assert np.min(sdf_sagittal) < 0
