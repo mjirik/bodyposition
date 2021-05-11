@@ -40,17 +40,17 @@ requirements:
     - setuptools
     - numpy
     - scipy
-   - imtools
+    - imtools
     - scikit-image
-   - io3d
+    - io3d
     - pandas
-   - sed3
+    - sed3
     - loguru
-   - imma
-   - tensorflow
-   - keras
-   - h5py
-   - SimpleITK
+    - imma
+    - tensorflow
+    - keras
+    - h5py
+    - SimpleITK
 
 
   run:
@@ -58,17 +58,17 @@ requirements:
     - numpy
     - scipy
     - scikit-image
-#    - imtools
+#     - imtools
     - io3d
     - pandas
-   - sed3
+    - sed3
     - imma
     - dill
     - loguru
     - tensorflow
-   - keras
-   - h5py
-   - SimpleITK
+    - keras
+    - h5py
+    - SimpleITK
 
 test:
   # Python imports
