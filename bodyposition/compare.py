@@ -1,4 +1,5 @@
 import h5py
+import matplotlib.pyplot as plt
 import numpy as np
 from loguru import logger
 import sed3
@@ -6,6 +7,8 @@ import time
 import seg
 import io3d
 import imma
+import exsu
+from pathlib import Path
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
@@ -39,6 +42,16 @@ def compare(
     
     import bodynavigation as bn
     import bodyposition as bp
+
+    outputdir = Path("./test_report/")
+    commonsheet = Path("./experiments.xlsx")
+    report = exsu.report.Report(outputdir=outputdir, additional_spreadsheet_fn=commonsheet, check_version_of=["numpy", "scipy"])
+
+    # plt.figure()
+    # plt.imshow(lfalsj)
+    # plt.savefig("soubor.pdf")
+    # plt.show()
+
     
     if sdf_type == "liver" or sdf_type == "spleen" or sdf_type == "lungs" or sdf_type == "fatless" or sdf_type == "bones":
         organ_detection_on = True
@@ -57,9 +70,10 @@ def compare(
         sdf1 = eval(f"od.get{sdf_type}()")
     time1 = time.time() - start_time
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf1[0:-1]), axis=0)
-    
+
     
     # BODYPOSITION
+    # report.imsave("obrazek", np.random.random([20,30]), level=60)
     
     start_time = time.time()
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
@@ -69,8 +83,15 @@ def compare(
     # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf2[0:-1]), axis=0)
     
     evaluation = imma.volumetry_evaluation.compare_volumes(sdf1, sdf2, voxelsize_mm=voxelsize)
-    
-    
+    report.add_cols_to_actual_row({
+        "datetime": time.time(),
+        "time1": time1,
+        "time2": time2,
+    })
+    report.add_cols_to_actual_row(evaluation)
+    report.finish_actual_row()
+
+
 if __name__ == "__main__":
     # this will be skipped if file is imported but it will work if file is called from commandline
     compare()
