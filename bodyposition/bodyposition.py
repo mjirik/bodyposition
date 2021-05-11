@@ -106,7 +106,7 @@ class BodyPosition:
         if sdf_type in models:
             model = models[sdf_type]
         else:
-            model = load_model(f"sdf_unet_{sdf_type}.h5")
+            model = load_model(f"final_sdf_unet_{sdf_type}.h5")
             models[sdf_type] = model
         return model
     
