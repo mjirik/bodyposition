@@ -4,7 +4,7 @@ import numpy as np
 from loguru import logger
 import sed3
 import time
-import seg
+import bodyposition.seg
 import io3d
 import imma
 import exsu
@@ -62,11 +62,10 @@ def compare(
         ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
         sdf_bodynavigation = eval(f"ss.dist_to_{sdf_type}()")
     else:
-        from bodynavigation.organ_detection import OrganDetection
-        od = OrganDetection(data3d_orig["data3d"], voxelsize)
+        od = bodynavigation.organ_detection.OrganDetection(data3d_orig["data3d"], voxelsize)
         sdf_bodynavigation = eval(f"od.get{sdf_type}()")
     time_bodynavigation = time.time() - start_time
-    # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf1[0:-1]), axis=0)
+    sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf_bodynavigation[0:-1]), axis=0)
 
     
     # BODYPOSITION
@@ -76,7 +75,7 @@ def compare(
     bpo = bp.BodyPosition(data3d_orig["data3d"], data3d_orig['voxelsize_mm'])
     sdf_bodyposition = eval(f"bpo.dist_to_{sdf_type}()")
     time_bodyposition = time.time() - start_time
-    # sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf2[0:-1]), axis=0)
+    sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf_bodyposition[0:-1]), axis=0)
     
     # EVALUATION AND REPORT SAVING
     

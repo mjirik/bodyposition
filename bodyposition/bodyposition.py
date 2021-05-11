@@ -4,6 +4,14 @@ import imma.image
 # import bodyposition.CT_regression_tools
 from . import CT_regression_tools
 # import CT_regression_tools
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
+from tensorflow.keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D
+from tensorflow.keras.models import load_model
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras import backend as K
+
 models = {}
 
 class BodyPosition:

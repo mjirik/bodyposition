@@ -17,12 +17,12 @@ def test(
     # sdf_type='sagittal',
     # sdf_type='surface',
     # sdf_type='bones',
-    # sdf_type='fatless',
-    sdf_type='liver',
+    sdf_type='fatless',
+    # sdf_type='liver',
     # sdf_type='spleen',
     # sdf_type='lungs',
     filename_prefix='',
-    test_ids = [20, 40],
+    test_ids = [19, 20, 39, 40],
 ):
     """Evaluates a U-net NN with test data loaded from a .h5 file.
 
