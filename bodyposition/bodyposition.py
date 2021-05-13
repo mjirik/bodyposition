@@ -2,8 +2,8 @@ from loguru import logger
 import numpy as np
 import imma.image
 # import bodyposition.CT_regression_tools
-from . import CT_regression_tools
-# import CT_regression_tools
+# from . import CT_regression_tools
+import CT_regression_tools
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten

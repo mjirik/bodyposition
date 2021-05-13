@@ -4,11 +4,9 @@ import numpy as np
 from loguru import logger
 import sed3
 import time
-import bodyposition.seg
 import io3d
-import imma
+from imma.volumetry_evaluation import compare_volumes
 import exsu
-import bodyposition.CT_regression_tools
 from pathlib import Path
 
 from tensorflow.keras.models import Sequential
@@ -20,15 +18,14 @@ from tensorflow.keras import backend as K
 
 def compare(
     imshape=256,
-    # sdf_type='diaphragm_axial',
     # sdf_type='coronal',
     # sdf_type='sagittal',
     # sdf_type='surface',
     # sdf_type='bones',
     # sdf_type='fatless',
-    # sdf_type='liver',
+    sdf_type='liver',
     # sdf_type='spleen',
-    sdf_type='lungs',
+    # sdf_type='lungs',
     dataset = "3Dircadb1",
     scannum = 20,
 ):
@@ -42,14 +39,17 @@ def compare(
     """
     
     import bodynavigation
-    import bodyposition.bodyposition as bp
+    from bodynavigation.organ_detection import OrganDetection
+    import bodyposition
 
-    outputdir = Path("./experiments/")
-    commonsheet = Path("./experiments.xlsx")
+    pth = Path(__file__).parent.parent
+    outputdir = pth / "experiments/"
+    commonsheet = outputdir / "experiments.xlsx"
     report = exsu.report.Report(outputdir=outputdir, additional_spreadsheet_fn=commonsheet, check_version_of=["numpy", "scipy"])
 
+    organ_detection_on = False
     if sdf_type == "liver" or sdf_type == "spleen" or sdf_type == "lungs" or sdf_type == "fatless" or sdf_type == "bones":
-        organ_detection_on = True
+        organ_detection_on = True    
     
     data3d_orig = io3d.read_dataset(dataset, "data3d", scannum, orientation_axcodes='SPL')
     voxelsize = data3d_orig["voxelsize_mm"]
@@ -62,36 +62,48 @@ def compare(
         ss = bodynavigation.body_navigation.BodyNavigation(data3d_orig["data3d"], data3d_orig["voxelsize_mm"])
         sdf_bodynavigation = eval(f"ss.dist_to_{sdf_type}()")
     else:
-        od = bodynavigation.organ_detection.OrganDetection(data3d_orig["data3d"], voxelsize)
-        sdf_bodynavigation = eval(f"od.get{sdf_type}()")
+        od = OrganDetection(data3d_orig["data3d"], voxelsize)
+        if sdf_type == "liver":
+            st = "Liver"
+        if sdf_type == "spleen":
+            st = "Spleen"
+        if sdf_type == "lungs":
+            st = "Lungs"
+        if sdf_type == "fatless":
+            st = "FatlessBody"
+        if sdf_type == "bones":
+            st = "Bones"
+        sdf_bodynavigation = eval(f"od.get{st}()")
     time_bodynavigation = time.time() - start_time
-    sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf_bodynavigation[0:-1]), axis=0)
+    sed3.show_slices(np.asarray(data3d_orig["data3d"][0:-1]), np.asarray(sdf_bodynavigation[0:-1]), axis=0)
 
     
     # BODYPOSITION
     
     start_time = time.time()
     
-    bpo = bp.BodyPosition(data3d_orig["data3d"], data3d_orig['voxelsize_mm'])
+    bpo = bodyposition.BodyPosition(data3d_orig["data3d"], data3d_orig['voxelsize_mm'])
     sdf_bodyposition = eval(f"bpo.dist_to_{sdf_type}()")
     time_bodyposition = time.time() - start_time
-    sed3.show_slices(np.asarray(data[0:-1]), np.asarray(sdf_bodyposition[0:-1]), axis=0)
+    sed3.show_slices(np.asarray(data3d_orig["data3d"][0:-1]), np.asarray(sdf_bodyposition[0:-1]), axis=0)
     
     # EVALUATION AND REPORT SAVING
     
-    evaluation = imma.volumetry_evaluation.compare_volumes(sdf_bodynavigation, sdf_bodyposition, voxelsize_mm=voxelsize)
+    evaluation = compare_volumes(sdf_bodynavigation, sdf_bodyposition, voxelsize_mm=voxelsize)
     # logger.info(evaluation)
     
     report.add_cols_to_actual_row({
         "sdf type": sdf_type,
         "dataset": dataset,
         "scannum": scannum,
-        "datetime": time.time(),
+        "datetime": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(time.time())),
         "time_bodynavigation": time_bodynavigation,
         "time_bodyposition": time_bodyposition,
     })
     report.add_cols_to_actual_row(evaluation)
     report.finish_actual_row()
+    report.dump()
+    logger.info(f"Report finished - scan {scannum} (from {dataset}), {sdf_type} segmentation - BN {round(time_bodynavigation)} s, BP {round(time_bodyposition)} s")
 
 
 if __name__ == "__main__":
