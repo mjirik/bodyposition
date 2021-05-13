@@ -36,7 +36,7 @@ build:
 
 requirements:
   build:
-    - python
+    - python=3.7
     - setuptools
     - numpy
     - scipy
@@ -47,33 +47,31 @@ requirements:
     - sed3
     - loguru
     - imma
-    - tensorflow
+    - tensorflow=2.1
     - keras
     - h5py
     - SimpleITK
 
 
   run:
-    - python
+    - python=3.7
     - numpy
     - scipy
     - scikit-image
-#     - imtools
     - io3d
     - pandas
     - sed3
     - imma
     - dill
     - loguru
-    - tensorflow
-    - keras
+    - tensorflow=2.1
     - h5py
     - SimpleITK
 
 test:
   # Python imports
   imports:
-    - bodynavigation
+    - bodyposition
 
   # commands:
     # You can put test commands to be run here.  Use this to test that the
@@ -90,7 +88,7 @@ test:
 about:
   home: https://github.com/mjirik/bodynposition
   license: MIT License
-  summary: 'Segmentation of signed distance fields in anatomy using neural networks.'
+  summary: 'Segmentation of signed distance fields in anatomy using U-net neural networks.'
 
 # See
 # http://docs.continuum.io/conda/build.html for
