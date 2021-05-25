@@ -4,6 +4,10 @@ import imma.image
 # import bodyposition.CT_regression_tools
 # from . import CT_regression_tools
 import CT_regression_tools
+import os
+from pathlib import Path
+
+path_to_script = Path(os.path.dirname(os.path.abspath(__file__)))
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
@@ -13,6 +17,17 @@ from tensorflow.keras.optimizers import SGD
 from tensorflow.keras import backend as K
 
 models = {}
+
+urllib = {
+    "sagittal": "https://drive.google.com/uc?export=download&id=1wPq2tA-0k12cQutt7kZzv74rQ_WSLkCP",
+    "coronal": "https://drive.google.com/uc?export=download&id=1tORaZ9LMpOp5MQS38LZ3WV5YrWc-ziuy",
+    "surface": "https://drive.google.com/uc?export=download&id=1zi2iCeK0My2GB0ymOSJzxQhXnhtLwn3N",
+    "bones": "https://drive.google.com/uc?export=download&id=10Xp13myCq7ZFkU3Px9JRvUqLw12CZZ_L",
+    "fatless": "https://drive.google.com/uc?export=download&id=1Cj26jZETnhNJ0RlEtzL2C88PZkWU6Hv-",
+    "liver": "https://drive.google.com/uc?export=download&id=17Paj-WHdBmLNk-_4QrRWKpUdInCnu4z-",
+    "spleen": "https://drive.google.com/uc?export=download&id=1P1U8iD_rlaYzMvB6e5LgydpK5_3K5UNL",
+    "lungs": "https://drive.google.com/uc?export=download&id=1U6qCs8DlmSpDykWSv0UrAv62xR-tntlq",
+}
 
 class BodyPosition:
 
@@ -109,12 +124,32 @@ class BodyPosition:
     def _resize_to_orig_shape(self, data):
         return imma.image.resize_to_shape(data, self.orig_shape)
     
+    def _get_devel_model_path(self, sdf_type):
+        model_path = path_to_script / f"final_sdf_unet_{sdf_type}.h5"
+        return model_path
+    
+    def download_model(self, sdf_type):
+        import requests
+
+        model_path = self._get_devel_model_path(sdf_type)
+        url = urllib[sdf_type]
+        
+        if not model_path.exists():
+            model_path.parent.mkdir(parents=True, exist_ok=True)
+            # logger.debug(f"Downloading from '{url}' to {str(model_path)}")
+            r = requests.get(url, allow_redirects=True)
+            open(model_path, "wb").write(r.content)
+        return model_path
+    
     def _get_model(self, sdf_type):
         from tensorflow.keras.models import load_model
         if sdf_type in models:
             model = models[sdf_type]
         else:
-            model = load_model(f"final_sdf_unet_{sdf_type}.h5")
+            model_path = self._get_devel_model_path(sdf_type)
+            if not model_path.exists():
+                model_path = self.download_model(sdf_type)
+            model = load_model(model_path)
             models[sdf_type] = model
         return model
     

@@ -133,3 +133,4 @@ dmypy.json
 
 bodyposition/test.py
 *.xlsx
+*.ini
