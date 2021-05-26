@@ -36,7 +36,7 @@ build:
 
 requirements:
   build:
-    - python=3.7
+    - python>=3.7
     - setuptools
     - numpy
     - scipy
@@ -47,14 +47,15 @@ requirements:
     - sed3
     - loguru
     - imma
-    - tensorflow=2.1
+    - tensorflow>=2.1
     - keras
     - h5py
     - SimpleITK
+    - requests
 
 
   run:
-    - python=3.7
+    - python>=3.7
     - numpy
     - scipy
     - scikit-image
@@ -64,7 +65,7 @@ requirements:
     - imma
     - dill
     - loguru
-    - tensorflow=2.1
+    - tensorflow>=2.1
     - h5py
     - SimpleITK
 
@@ -86,7 +87,7 @@ test:
     # - nose
 
 about:
-  home: https://github.com/mjirik/bodynposition
+  home: https://github.com/mjirik/bodyposition
   license: MIT License
   summary: 'Segmentation of signed distance fields in anatomy using U-net neural networks.'
 
