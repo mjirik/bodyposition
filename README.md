@@ -3,11 +3,11 @@
 Estimation of a voxel's position inside body, it's relative distances to organs and/or anatomical structures.
 
 Liver segmentation
-![Liver segmentation](doc-img/liver test2-2.png)
+![Liver segmentation](doc-img/liver-test2-2.png)
 Fatless body signed distance field
-![Fatless body signed distance field](doc-img/fatless test2-2.png)
+![Fatless body signed distance field](doc-img/fatless-test2-2.png)
 Coronal (frontal) plane
-![Coronal (frontal) plane](doc-img/coronal test1-2.png)
+![Coronal (frontal) plane](doc-img/coronal-test1-2.png)
 
 # about
 
