@@ -125,7 +125,7 @@ class BodyPosition:
         return imma.image.resize_to_shape(data, self.orig_shape)
     
     def _get_devel_model_path(self, sdf_type):
-        model_path = path_to_script / f"final_sdf_unet_{sdf_type}.h5"
+        model_path = path_to_script.parent / f"bodyposition-models/final_sdf_unet_{sdf_type}.h5"
         return model_path
     
     def download_model(self, sdf_type):
