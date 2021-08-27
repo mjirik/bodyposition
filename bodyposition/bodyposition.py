@@ -154,7 +154,7 @@ class BodyPosition:
         return model
     
     def _predict(self):
-        data = CT_regression_tools.normalize(self.data3dr)
+        data = bodyposition.CT_regression_tools.normalize(self.data3dr)
         data = self._resize(data)
         data = np.asarray(data).reshape(np.asarray(data).shape[0], self.imshape, self.imshape, 1)
         
@@ -167,7 +167,7 @@ class BodyPosition:
     def _resize(self, data):
         data2 = []
         for i in range(len(data)):
-            data2.append(CT_regression_tools.resize(data[i], self.imshape))
+            data2.append(bodyposition.CT_regression_tools.resize(data[i], self.imshape))
         return data2
     
     def get_data(self, dataset, scannum):
